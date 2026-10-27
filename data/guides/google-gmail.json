@@ -1,0 +1,152 @@
+{
+ "slug": "google-gmail",
+ "app": "Google (Gmail)",
+ "website": "https://developers.google.com",
+ "category": "Email",
+ "summary": "Most Gmail read and modify scopes are restricted. Expect app verification, plus an annual security assessment if your servers store or transmit mail. Google says the restricted process can take several weeks.",
+ "verdict": {
+  "level": "weeks",
+  "label": "Verification needed: weeks",
+  "approval_required": true,
+  "effort": "Several setup steps including a demo video; more if a security assessment applies. Effort not measured.",
+  "wait": "Google says restricted scope verification can potentially take several weeks; branding verification typically takes 2-3 business days. No timeline is published for the security assessment.",
+  "reason": "Public apps that use sensitive or restricted scopes must be verified. Reading or modifying mail uses restricted scopes, and apps that store or transmit restricted data on servers must complete a security assessment from a Google-approved assessor, repeated at least every 12 months. Unverified apps are capped at 100 users.",
+  "evidence": "sourced",
+  "source_url": "https://developers.google.com/identity/protocols/oauth2/production-readiness/restricted-scope-verification"
+ },
+ "steps": [
+  {
+   "title": "Create a Google Cloud project",
+   "detail": "Open Google Cloud Console and create a project for your app.",
+   "who": "you",
+   "evidence": "unverified",
+   "source_url": null
+  },
+  {
+   "title": "Set up branding and the OAuth consent screen",
+   "detail": "Enter your app name, logo, homepage and privacy policy link, and add an authorized domain you own. Verify ownership of every authorized domain in Google Search Console. Google's pages call this screen both the Branding page and the OAuth consent screen. Keep the project contact email current, because Google sends verification messages there.",
+   "who": "either",
+   "evidence": "sourced",
+   "source_url": "https://support.google.com/cloud/answer/13464321"
+  },
+  {
+   "title": "Choose the narrowest Gmail scopes",
+   "detail": "gmail.labels is non-sensitive and gmail.send is sensitive. gmail.readonly, gmail.compose, gmail.insert, gmail.modify, gmail.metadata and https://mail.google.com/ are restricted. An agent can map your use case to the narrowest scope that works. Google also asks you to explain why narrower scopes are not enough.",
+   "who": "agent",
+   "evidence": "sourced",
+   "source_url": "https://developers.google.com/workspace/gmail/api/auth/scopes"
+  },
+  {
+   "title": "Create OAuth client credentials",
+   "detail": "Create a Web application client and add your redirect URIs.",
+   "who": "either",
+   "evidence": "unverified",
+   "source_url": null
+  },
+  {
+   "title": "Run in Testing mode first",
+   "detail": "Only users on your test-user list can use the app, up to 100 test users. Refresh tokens for apps in testing expire after 7 days unless a Workspace admin marks the app as Trusted.",
+   "who": "you",
+   "evidence": "sourced",
+   "source_url": "https://developers.google.com/identity/protocols/oauth2/production-readiness/overview"
+  },
+  {
+   "title": "Submit for verification",
+   "detail": "Verify your domain, publish your branding, then request a data access review in the Verification Center. Declare all your scopes, add up to three documentation links, and upload an unlisted YouTube demo video showing the consent flow, the app name and client ID on the consent screen, and how each sensitive and restricted scope is used. An agent can draft the scope justification and the video script.",
+   "who": "you",
+   "evidence": "sourced",
+   "source_url": "https://developers.google.com/identity/protocols/oauth2/production-readiness/restricted-scope-verification"
+  }
+ ],
+ "blockers": [
+  {
+   "title": "Restricted scopes need a security assessment",
+   "detail": "Google says storing or transmitting restricted scope data on servers requires a security assessment by an independent, Google-approved assessor using the CASA framework. It must be repeated at least every 12 months. The pages do not state the cost or how long the assessment takes.",
+   "what_to_do": "Find out early whether your design triggers it. Because the rule covers transmitting data as well as storing it, an agent that reads mail through your servers will probably need it. Prefer a sensitive scope such as gmail.send if it covers your use case.",
+   "evidence": "sourced",
+   "source_url": "https://developers.google.com/identity/protocols/oauth2/production-readiness/restricted-scope-verification"
+  },
+  {
+   "title": "Testing mode and unverified app limits",
+   "detail": "Testing apps are capped at 100 test users. A published but unverified app that requests sensitive or restricted scopes is capped at 100 total users, and users see warnings on the consent screen.",
+   "what_to_do": "Use testing mode for development only. Plan for verification before launch.",
+   "evidence": "sourced",
+   "source_url": "https://developers.google.com/identity/protocols/oauth2/production-readiness/overview"
+  },
+  {
+   "title": "Domain and policy requirements",
+   "detail": "Your homepage must be on a verified domain you own, must describe what the app does and cannot be only a login page. The privacy policy should be on the same domain, linked from the homepage and from the consent screen, using the same link.",
+   "what_to_do": "Set these up before submitting, not after the first rejection.",
+   "evidence": "sourced",
+   "source_url": "https://support.google.com/cloud/answer/13464321"
+  }
+ ],
+ "agent_vs_you": {
+  "agent_can": [
+   "Pick the narrowest scopes for your use case",
+   "Draft scope justifications and the demo video script",
+   "Check that policy pages mention the data you request"
+  ],
+  "you_must": [
+   "Own and verify the domain in Google Search Console",
+   "Record the demo video and submit verification",
+   "Respond to Google's reviewers",
+   "Arrange the security assessment with a Google-approved assessor if it applies"
+  ]
+ },
+ "sources": [
+  {
+   "url": "https://developers.google.com/identity/protocols/oauth2/production-readiness/restricted-scope-verification",
+   "title": "Restricted scope verification"
+  },
+  {
+   "url": "https://developers.google.com/workspace/gmail/api/auth/scopes",
+   "title": "Gmail API: choose auth scopes"
+  },
+  {
+   "url": "https://developers.google.com/identity/protocols/oauth2/production-readiness/overview",
+   "title": "OAuth app verification overview"
+  },
+  {
+   "url": "https://support.google.com/cloud/answer/13465431",
+   "title": "Google Cloud help: Security assessment"
+  },
+  {
+   "url": "https://support.google.com/cloud/answer/13464321",
+   "title": "Google Cloud help: Verification requirements"
+  }
+ ],
+ "verification": {
+  "status": "sourced",
+  "log": [
+   {
+    "date": "2026-10-28",
+    "note": "Read the Gmail scopes page. Corrected: the summary said Gmail scopes are restricted, but only some are. gmail.labels is non-sensitive, gmail.send is sensitive, and gmail.readonly, compose, insert, modify, metadata and https://mail.google.com/ are restricted."
+   },
+   {
+    "date": "2026-10-28",
+    "note": "Read the restricted scope verification and security assessment pages. Confirmed: annual assessment by a Google-approved assessor, and the 'several weeks' timeline. Corrected: removed the claim that the assessment has a cost, because neither page states one. Corrected: the rule covers transmitting data as well as storing it, so 'avoid storing mail' does not by itself avoid the assessment. Added the real submission steps."
+   },
+   {
+    "date": "2026-10-28",
+    "note": "Read the verification overview and requirements pages. Confirmed the 100-user caps and the warning screen. Added: 7-day refresh token expiry in testing mode, and the homepage and privacy policy rules."
+   },
+   {
+    "date": "2026-10-28",
+    "note": "Not confirmed: creating the Cloud project, creating the OAuth client and redirect URIs, the effort estimate, and the security assessment cost and duration. The Sensitive scope verification page listed in the earlier draft could not be fetched, so it was removed from sources. No setup was attempted, so nothing is marked tested."
+   }
+  ],
+  "checks_to_run": [
+   "Create a Cloud project and OAuth client and note the steps and time taken",
+   "Open the consent screen settings and note the current user cap and warning text",
+   "Find the security assessment cost and typical duration from an approved assessor",
+   "Read the Sensitive scope verification page to confirm what gmail.send needs",
+   "Check whether your console calls this screen Branding or OAuth consent screen"
+  ]
+ },
+ "generated": {
+  "live": false,
+  "at": "2026-10-28",
+  "model": "draft written from general knowledge, then compared against Google documentation pages fetched on 2026-10-28; no setup attempt"
+ }
+}

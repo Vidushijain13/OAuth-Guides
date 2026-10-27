@@ -1,0 +1,134 @@
+{
+ "slug": "github",
+ "app": "GitHub",
+ "website": "https://github.com",
+ "category": "Developer tools",
+ "summary": "Create the OAuth app yourself in a few minutes. Organizations may need an owner to approve it.",
+ "verdict": {
+  "level": "instant",
+  "label": "Self-serve, about 30 min",
+  "approval_required": false,
+  "effort": "20-40 minutes",
+  "wait": "None for your own account; org owners may need to approve it",
+  "reason": "You register the app in your own settings and it works right away. No review by GitHub is needed.",
+  "evidence": "unverified",
+  "source_url": null
+ },
+ "steps": [
+  {
+   "title": "Open the OAuth app settings",
+   "detail": "In GitHub go to Settings, Developer settings, OAuth Apps, then New OAuth App. If you have never created an app, the button reads Register a new application.",
+   "who": "you",
+   "evidence": "sourced",
+   "source_url": "https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app"
+  },
+  {
+   "title": "Fill in the app details",
+   "detail": "Enter the application name, your homepage URL and the authorization callback URL where users return after login (you can add up to 10). A description and Device Flow are optional. Expire user access tokens is on by default; turn it off only if your auth code cannot handle short-lived tokens. Then click Register application.",
+   "who": "either",
+   "evidence": "sourced",
+   "source_url": "https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app"
+  },
+  {
+   "title": "Save the client ID and generate a client secret",
+   "detail": "Store the secret in your secrets manager, never in code.",
+   "who": "you",
+   "evidence": "unverified",
+   "source_url": null
+  },
+  {
+   "title": "Choose scopes",
+   "detail": "Request the smallest scopes you need, since scopes limit what a token can access. An agent can draft the scope list from your use case.",
+   "who": "agent",
+   "evidence": "sourced",
+   "source_url": "https://docs.github.com/en/apps/oauth-apps/using-oauth-apps/authorizing-oauth-apps"
+  },
+  {
+   "title": "Test with your own account",
+   "detail": "Run the login flow once and confirm you receive a token with the scopes you asked for.",
+   "who": "either",
+   "evidence": "unverified",
+   "source_url": null
+  }
+ ],
+ "blockers": [
+  {
+   "title": "Organization access restrictions",
+   "detail": "Orgs can restrict third-party OAuth apps. When restrictions are on, members and outside collaborators must request approval from an org owner before they can authorize your app, and until it is approved the app can reach only the org's public resources. Orgs without restrictions authorize it automatically.",
+   "what_to_do": "Tell the user to ask an org owner to approve the app. Owners do this under the org's OAuth app policy (Third-party Access, then Review, then Grant access).",
+   "evidence": "sourced",
+   "source_url": "https://docs.github.com/en/organizations/managing-oauth-access-to-your-organizations-data/approving-oauth-apps-for-your-organization"
+  },
+  {
+   "title": "OAuth App or GitHub App",
+   "detail": "GitHub Apps have targeted permissions and GitHub recommends them over OAuth apps in general. OAuth apps use broad scopes. Picking the wrong type means redoing setup later.",
+   "what_to_do": "Decide before building. Check which one your integration platform expects.",
+   "evidence": "sourced",
+   "source_url": "https://docs.github.com/en/enterprise-server@3.9/apps/oauth-apps/building-oauth-apps/differences-between-github-apps-and-oauth-apps"
+  }
+ ],
+ "agent_vs_you": {
+  "agent_can": [
+   "Draft the scope list and callback URL format",
+   "Explain the difference between OAuth Apps and GitHub Apps for your case",
+   "Run the test login flow if given a test account"
+  ],
+  "you_must": [
+   "Sign in to GitHub and create the app",
+   "Keep the client secret safe",
+   "Get org owner approval for organization data"
+  ]
+ },
+ "sources": [
+  {
+   "url": "https://docs.github.com/en/apps/oauth-apps/building-oauth-apps/creating-an-oauth-app",
+   "title": "GitHub docs: creating an OAuth app"
+  },
+  {
+   "url": "https://docs.github.com/en/organizations/managing-oauth-access-to-your-organizations-data/approving-oauth-apps-for-your-organization",
+   "title": "GitHub docs: approving OAuth apps for your organization"
+  },
+  {
+   "url": "https://docs.github.com/en/apps/oauth-apps/using-oauth-apps/authorizing-oauth-apps",
+   "title": "GitHub docs: authorizing OAuth apps"
+  },
+  {
+   "url": "https://docs.github.com/en/enterprise-server@3.9/apps/oauth-apps/building-oauth-apps/differences-between-github-apps-and-oauth-apps",
+   "title": "GitHub docs: differences between GitHub Apps and OAuth apps (Enterprise Server 3.9 version)"
+  }
+ ],
+ "verification": {
+  "status": "sourced",
+  "log": [
+   {
+    "date": "2026-10-28",
+    "note": "Read the creating-an-OAuth-app page. Steps 1 and 2 match. Corrected: removed the localhost/HTTPS advice, which the page does not cover. Added: up to 10 callback URLs, Device Flow, Expire user access tokens."
+   },
+   {
+    "date": "2026-10-28",
+    "note": "Read the org approval and authorizing pages. The org restriction blocker matches. Corrected: replaced 'request access from the consent screen' with the owner approval path the docs describe."
+   },
+   {
+    "date": "2026-10-28",
+    "note": "Read the GitHub Apps vs OAuth apps page (Enterprise Server 3.9 version, not the current cloud docs). The permissions claim matches. Softened the short-lived-tokens claim, because the current create-app page offers expiring user tokens for OAuth apps too."
+   },
+   {
+    "date": "2026-10-28",
+    "note": "Not confirmed by any page read: client secret generation, 'no review by GitHub', and the 20-40 minute estimate. No setup was attempted, so nothing is marked tested."
+   }
+  ],
+  "checks_to_run": [
+   "Create a real OAuth app and note how long it took",
+   "Confirm how the client secret is generated and shown",
+   "Confirm whether a new OAuth app needs any review",
+   "Confirm whether localhost callback URLs work for local testing",
+   "Test an org-owned repo with a non-owner account to see the approval screen",
+   "Check the current cloud docs for GitHub Apps vs OAuth apps token expiry"
+  ]
+ },
+ "generated": {
+  "live": false,
+  "at": "2026-10-28",
+  "model": "draft written from general knowledge, then compared against GitHub docs pages fetched on 2026-10-28; no setup attempt"
+ }
+}

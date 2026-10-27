@@ -1,0 +1,102 @@
+{
+ "slug": "linkedin",
+ "app": "LinkedIn",
+ "website": "https://www.linkedin.com",
+ "category": "Social / professional",
+ "summary": "Basic sign-in is self-serve. Most useful APIs need LinkedIn to approve you for a product, and approval is not guaranteed.",
+ "verdict": {
+  "level": "weeks",
+  "label": "Partner approval for most APIs",
+  "approval_required": true,
+  "effort": "Several hours to apply",
+  "wait": "Unclear. Could be weeks, and may be denied",
+  "reason": "You can create an app and request some products quickly, but company-level or marketing APIs need approval, and LinkedIn can decline.",
+  "evidence": "unverified",
+  "source_url": null
+ },
+ "steps": [
+  {
+   "title": "Create or pick a LinkedIn Company Page",
+   "detail": "An app must be linked to a Company Page. Someone with admin rights on that page must verify the app.",
+   "who": "you",
+   "evidence": "unverified",
+   "source_url": null
+  },
+  {
+   "title": "Create the app in the developer portal",
+   "detail": "Add app name, logo, privacy policy URL and the company page.",
+   "who": "you",
+   "evidence": "unverified",
+   "source_url": null
+  },
+  {
+   "title": "Send the verification link to the page admin",
+   "detail": "The page admin must approve the app before it can use products.",
+   "who": "you",
+   "evidence": "unverified",
+   "source_url": null
+  },
+  {
+   "title": "Request the products you need",
+   "detail": "Some products, such as sign-in with OpenID Connect, are available right away. Others require an application with a use-case description.",
+   "who": "either",
+   "evidence": "unverified",
+   "source_url": null
+  },
+  {
+   "title": "Add redirect URLs and test",
+   "detail": "Add your HTTPS redirect URL and test the sign-in flow with your own account.",
+   "who": "either",
+   "evidence": "unverified",
+   "source_url": null
+  }
+ ],
+ "blockers": [
+  {
+   "title": "Product approval",
+   "detail": "APIs for posting, marketing or community management need LinkedIn's approval and are sometimes limited to certain kinds of businesses.",
+   "what_to_do": "Write a clear use-case description and ask only for the products you need. Have a fallback if you are declined.",
+   "evidence": "unverified",
+   "source_url": null
+  },
+  {
+   "title": "Company Page dependency",
+   "detail": "Without a Company Page and an admin who will verify, you cannot proceed.",
+   "what_to_do": "Sort out page ownership before you start building.",
+   "evidence": "unverified",
+   "source_url": null
+  }
+ ],
+ "agent_vs_you": {
+  "agent_can": [
+   "Draft the use-case description for each product",
+   "Check the redirect URL and scope format",
+   "Prepare the privacy policy checklist"
+  ],
+  "you_must": [
+   "Verify the app as page admin",
+   "Apply for the products",
+   "Wait for LinkedIn's decision"
+  ]
+ },
+ "sources": [
+  {
+   "url": "https://learn.microsoft.com/en-us/linkedin/shared/authentication/authorization-code-flow",
+   "title": "LinkedIn authorization code flow"
+  }
+ ],
+ "verification": {
+  "status": "unverified",
+  "log": [],
+  "checks_to_run": [
+   "Create an app and write down which products are instant and which need an application",
+   "Confirm what happens if the Company Page admin is someone else",
+   "Check the source link still opens"
+  ]
+ },
+ "generated": {
+  "live": false,
+  "at": "2026-10-27",
+  "model": "draft written from general knowledge, not from fetched pages"
+ }
+}

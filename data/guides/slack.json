@@ -1,0 +1,151 @@
+{
+ "slug": "slack",
+ "app": "Slack",
+ "website": "https://slack.com",
+ "category": "Messaging",
+ "summary": "You can build and install in your own workspace right away, and public distribution to other workspaces does not need a Marketplace listing. Listing in the Slack Marketplace is a separate review that Slack estimates at up to 10 weeks for new apps.",
+ "verdict": {
+  "level": "hours",
+  "label": "Self-serve to start, review to list",
+  "approval_required": null,
+  "effort": "Not measured. Creating and installing is quick; the Marketplace path adds a checklist, testing on a separate workspace and a long review.",
+  "wait": "None for public distribution. Marketplace: preliminary review up to 10 business days, then functional review up to 10 weeks for new submissions (Slack's estimates, not guarantees).",
+  "reason": "Activating public distribution lets other workspaces install your app without a Marketplace listing. Slack recommends a Marketplace listing for commercial apps, and that review has long published timelines.",
+  "evidence": "sourced",
+  "source_url": "https://docs.slack.dev/app-management/distribution/"
+ },
+ "steps": [
+  {
+   "title": "Create an app",
+   "detail": "Go to the Slack API apps page and choose Create New App, from scratch.",
+   "who": "you",
+   "evidence": "unverified",
+   "source_url": null
+  },
+  {
+   "title": "Add redirect URLs",
+   "detail": "In the App Management page under OAuth & Permissions, add your redirect URL. It must use HTTPS and cannot contain an anchor (#). The redirect_uri you send during install must match it or be a subdirectory of it.",
+   "who": "either",
+   "evidence": "sourced",
+   "source_url": "https://docs.slack.dev/authentication/installing-with-oauth/"
+  },
+  {
+   "title": "Add bot and user scopes",
+   "detail": "Bot scopes are for your app's bot user. Request user scopes only if the app must act on behalf of a user. Pick only what you need. An agent can map actions like 'post a message' to scopes.",
+   "who": "agent",
+   "evidence": "sourced",
+   "source_url": "https://docs.slack.dev/authentication/installing-with-oauth/"
+  },
+  {
+   "title": "Install to your own workspace",
+   "detail": "Install it and copy the tokens to test the flow.",
+   "who": "you",
+   "evidence": "unverified",
+   "source_url": null
+  },
+  {
+   "title": "Turn on public distribution",
+   "detail": "In your app's dashboard, open Manage Distribution, find Share Your App with Other Workspaces, complete the checklist and click Activate Public Distribution. You get an Add to Slack button and a shareable install URL. Your OAuth redirect, interaction request, options load and Events API request URLs must support SSL.",
+   "who": "you",
+   "evidence": "sourced",
+   "source_url": "https://docs.slack.dev/app-management/distribution/"
+  },
+  {
+   "title": "Optional: submit to the Marketplace",
+   "detail": "Not required to let other workspaces install, but Slack recommends it for commercial apps. Test on a workspace that is not your development workspace, from install through uninstall. Your app must be installed on 10 or more active workspaces. Provide test account credentials and a way for reviewers to install the app, since they cannot access any workspace. A short demo video is recommended and speeds review.",
+   "who": "you",
+   "evidence": "sourced",
+   "source_url": "https://docs.slack.dev/slack-marketplace/slack-marketplace-review-guide"
+  }
+ ],
+ "blockers": [
+  {
+   "title": "Marketplace review is slow",
+   "detail": "Slack estimates a preliminary review of up to 10 business days, then a functional review of up to 10 weeks for new submissions and 6 weeks for published apps resubmitting changes. All feedback must be addressed before listing, and your queue place resets on each resubmission during the preliminary review. Reviews cannot be accelerated.",
+   "what_to_do": "Submit with clear testing instructions and a short demo video. Meanwhile, share your public distribution install link with early customers.",
+   "evidence": "sourced",
+   "source_url": "https://docs.slack.dev/slack-marketplace/slack-marketplace-review-guide"
+  },
+  {
+   "title": "Marketplace needs 10 active workspaces",
+   "detail": "Your app must be installed on 10 or more active workspaces, meaning used in the past 28 days, before you submit.",
+   "what_to_do": "Use public distribution to pilot with early customers first. Plan the listing as a later step, not a launch blocker.",
+   "evidence": "sourced",
+   "source_url": "https://docs.slack.dev/slack-marketplace/slack-marketplace-review-guide"
+  },
+  {
+   "title": "Workspace admin approval",
+   "detail": "Admins can turn on an Approve apps setting. When it is on, a Slack user must request the app and an admin must approve it before it is installed for the team to use.",
+   "what_to_do": "Give users a short message they can send to their admin explaining the scopes.",
+   "evidence": "sourced",
+   "source_url": "https://docs.slack.dev/admins/managing-app-approvals"
+  }
+ ],
+ "agent_vs_you": {
+  "agent_can": [
+   "Map actions to the minimum scopes",
+   "Draft the privacy policy outline and the admin approval message",
+   "Check redirect URL format"
+  ],
+  "you_must": [
+   "Create the app with your Slack account",
+   "Install it and accept Slack's terms",
+   "Submit the Marketplace review"
+  ]
+ },
+ "sources": [
+  {
+   "url": "https://docs.slack.dev/authentication/installing-with-oauth/",
+   "title": "Slack docs: installing with OAuth"
+  },
+  {
+   "url": "https://docs.slack.dev/app-management/distribution/",
+   "title": "Slack docs: app lifecycle and distribution"
+  },
+  {
+   "url": "https://docs.slack.dev/slack-marketplace/slack-marketplace-review-guide",
+   "title": "Slack docs: Marketplace review guide"
+  },
+  {
+   "url": "https://docs.slack.dev/admins/managing-app-approvals",
+   "title": "Slack docs: managing app approvals"
+  }
+ ],
+ "verification": {
+  "status": "sourced",
+  "log": [
+   {
+    "date": "2026-10-28",
+    "note": "Read the Slack OAuth page (the api.slack.com link in the earlier draft redirects to docs.slack.dev). Confirmed: redirect URLs go under OAuth & Permissions and must use HTTPS. Added: no anchor allowed, redirect_uri must match, bot scope vs user scope."
+   },
+   {
+    "date": "2026-10-28",
+    "note": "Read the distribution page. Confirmed the Manage Distribution path and that public distribution works without a Marketplace listing. The page does not itemize the checklist. Added: the SSL requirement for four URL types and what activation gives you."
+   },
+   {
+    "date": "2026-10-28",
+    "note": "Read the Marketplace review guide. Corrected: the draft said review was 'likely days to weeks', but Slack publishes up to 10 business days plus up to 10 weeks for new apps. Added: the 10 active workspaces requirement. The page does not state a privacy policy or support page requirement, so the draft claim about them was removed rather than kept."
+   },
+   {
+    "date": "2026-10-28",
+    "note": "Read the app approvals page. Confirmed the Approve apps setting and the request-then-approve flow. Corrected: removed 'many workspaces require this', because the page does not say how common it is or whether it is on by default. The page describes Enterprise organizations, so how it applies to a single workspace is not confirmed."
+   },
+   {
+    "date": "2026-10-28",
+    "note": "Not confirmed: the Create New App, from scratch flow (the Slack quickstart documents a CLI path instead), where tokens appear after install, and the 1-3 hour estimate. No setup was attempted, so nothing is marked tested."
+   }
+  ],
+  "checks_to_run": [
+   "Create the app and install it in your workspace, then note the steps, the time taken and where the tokens appear",
+   "Confirm the Create New App, from scratch flow in the current dashboard",
+   "Open Manage Distribution and list the checklist items, which the docs do not itemize",
+   "Check Slack's Marketplace guidelines for any privacy policy or support page requirement",
+   "Test an install in a workspace that has Approve apps turned on"
+  ]
+ },
+ "generated": {
+  "live": false,
+  "at": "2026-10-28",
+  "model": "draft written from general knowledge, then compared against Slack documentation pages fetched on 2026-10-28; no setup attempt"
+ }
+}
