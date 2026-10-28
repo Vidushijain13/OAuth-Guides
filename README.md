@@ -1,57 +1,74 @@
 # OAuth setup guides for agent builders
 
-A developer looks up an app (or types any app name or website) and gets a guide that says:
-how hard it is, how long it takes, whether the provider must approve them, what can block them,
-and which steps an agent can do versus which they must do themselves.
+Know what an OAuth app will cost you before you launch an integration.
 
-Live link: _add your Vercel URL here_
+- **Live website:** https://oauth-guides-seven.vercel.app
+- **Demo video:** ATTACH-LOOM-LINK-HERE
+- **Research and testing summary:** [RESEARCH.md](./RESEARCH.md)
 
-## Run it
+## The problem
 
-1. `npm install`
-2. Get a free key from Google AI Studio. Copy `.env.example` to `.env.local` and fill in `GEMINI_API_KEY`
-   and `GEMINI_MODEL` (copy the exact model ID from AI Studio).
-3. `npm run dev`, open http://localhost:3000
+Before an agent can connect to a user's app, the developer often has to create an OAuth app with the provider and sometimes get it approved. Today it is hard to tell whether that takes 30 minutes or several weeks, what could block approval, and which steps an agent can do for you.
 
-On Vercel, add the same two values under Project Settings, Environment Variables. Never commit `.env.local`.
+## What it does
 
-## What is in it
-
-- **Library:** 4 hand-checked-in guides in `data/guides/*.json` (GitHub, Slack, Google Gmail, LinkedIn),
-  chosen because their setup difficulty is very different (minutes to weeks).
-- **Live generation:** `/api/generate` runs an agent that (1) identifies the app and its official docs,
-  (2) fetches those pages, (3) writes the guide using only what it read, (4) checks its own claims.
-- **Sharing:** a generated guide is shared as a link that carries the guide in the URL hash. No database.
+- **Guide library.** Guides for GitHub, Google (Gmail), LinkedIn and Slack. Each guide shows a one-line verdict, the effort and wait, ordered steps, blockers, and a split of what an agent can do versus what you must do. The four apps were chosen because each has a different setup challenge: self-serve (GitHub), verification that takes weeks (Gmail), partner approval (LinkedIn), and self-serve to start with a separate review to be listed (Slack).
+- **Live generation.** Enter an app name or website. The app tries to read that provider's public documentation pages and uses the Gemini API to draft a guide in the same format as the library guides. The guide records the date, the model, and how many of the documentation pages it tried to read it could actually read.
+- **Evidence labels on every claim.** Each step, blocker and verdict is tagged Tested, Sourced or Unverified. Each guide has a "How much to trust this guide" section with a dated log of what was checked, what is still to check, and links to the sources.
 
 ## Key decisions
 
-1. **Every claim carries an evidence label: Tested, Sourced or Unverified.** The brief asks for honesty about
-   evidence, so this is part of the product, not just the README.
-2. **Code decides what counts as "Sourced", not the model.** A claim is only Sourced if the model cites a page
-   the server actually fetched. Anything else is downgraded to Unverified. Live guides can never be "Tested".
-3. **The top of every guide is a verdict:** time band, approval needed, your effort, provider wait.
-   A developer's first question is "is this an hour or a month?".
-4. **Agent vs you is explicit per step.** Logging in, identity or business verification, payments and review
-   forms always stay with the human.
-5. **Unknown is a valid answer.** If the docs don't state a timeline, the guide says so.
+- **Evidence over polish.** Guides written from a model's general knowledge had errors in all three guides I checked, so every claim carries a label and a source link instead of sounding equally confident.
+- **The approval wait is the headline.** The real cost for a developer is usually the approval wait, not the form, so each card leads with a one-line verdict such as "Self-serve, about 30 min" or "Verification needed: weeks".
+- **Agent versus you on every step.** Providers need a person to sign in, accept terms and submit reviews, so each step says who does it: you, the agent, or either.
+- **Live guides are always Unverified.** Nobody has checked a guide generated in real time, and the page says so.
+- **Guides are plain JSON files.** Each guide is one file in `data/guides/`, so a guide can be read, corrected and reviewed like any other source file.
 
-## Verification log (fill this in as you test)
+## Technology
 
-| Guide | What I checked | What I found | Changed in guide? |
-|---|---|---|---|
-| GitHub | | | |
-| Slack | | | |
-| Google (Gmail) | | | |
-| LinkedIn | | | |
-| Live: _app name_ | | | |
+Next.js, the Gemini API, and Vercel for hosting.
 
-Record results in each guide's `verification.log` and change `evidence` to `tested` or `sourced` only for
-claims you actually tested or confirmed on an official page.
+```
+app/            pages and API routes
+components/     GuideView.js renders a guide
+data/guides/    one JSON file per library guide
+lib/            helpers
+```
+
+## Run locally
+
+```bash
+git clone https://github.com/Vidushijain13/OAuth-Guides.git
+cd OAuth-Guides
+cp .env.example .env.local
+npm install
+npm run dev
+```
+
+Open http://localhost:3000.
+
+On Windows PowerShell, use `copy .env.example .env.local` instead of `cp`.
+
+In `.env.local`, set:
+
+| Variable | Value |
+| --- | --- |
+| `GEMINI_API_KEY` | Your own key from Google AI Studio |
+| `GEMINI_MODEL` | A current model ID from Google AI Studio |
+
+Library guides work without a key. Only live generation needs one. No credentials are committed to this repository.
+
+## Deploy
+
+Import the repository into Vercel, add the same two environment variables, and deploy. Redeploy after changing a variable, because variables apply only to new deployments.
 
 ## Limitations
 
-- Library guides were drafted from general knowledge and start as Unverified until checked.
-- Docs sites that need JavaScript to render can't be read by the simple fetcher, so some apps get thin guides.
-- The agent cannot create real OAuth apps or log in to providers, so it never produces "Tested" claims.
-- Free Gemini quota is small. Repeat requests are cached per server instance only.
-- Provider rules change. Each guide shows its date.
+- The library has four guides, not 100.
+- The agent reads documentation. It does not create OAuth apps in provider consoles or complete approvals.
+- Guides were checked against official documentation on 2026-10-28 and can go stale as providers change their requirements.
+- LinkedIn is Unverified. GitHub, Gmail and Slack are Sourced. No guide is Tested, because no setup was attempted.
+- Live guides are Unverified and can contain mistakes.
+- Gemini sometimes returns a temporary 503 error. The page then shows an error message and the developer can try again.
+
+See [RESEARCH.md](./RESEARCH.md) for what was checked, what was corrected and what could not be verified.
